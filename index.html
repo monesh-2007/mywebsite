@@ -698,13 +698,13 @@ Suitable for All Users</p>
         paymentDisplay.style.display = 'block';
         paymentText.textContent = '💻 Payment Through Online';
         document.getElementById('billPaymentMethod').textContent = '💻 Payment Through Online';
-        qrSection.style.display = 'block';
+        qrSection.style.display = 'none';
       } else if(offlineRadio.checked){
         selectedPaymentMethod = 'Payment Through Offline (Cash)';
         paymentDisplay.style.display = 'block';
         paymentText.textContent = '💵 Payment Through Offline (Cash)';
         document.getElementById('billPaymentMethod').textContent = '💵 Payment Through Offline (Cash)';
-        qrSection.style.display = 'none';
+        qrSection.style.display = 'block';
       } else {
         selectedPaymentMethod = null;
         paymentDisplay.style.display = 'none';
