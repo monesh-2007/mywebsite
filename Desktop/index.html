@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Power Ranging⚡</title>
+
+ 
+  <style>
+    :root{
+      --bg:#0b0f1a;
+      --card:#12172a;
+      --text:#e8ecf1;
+      --muted:#a6b2c3;
+      --primary:#7c3aed;      
+      --primary-2:#22d3ee;    
+      --accent:#f59e0b;       
+      --shadow:rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Outfit",system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      color:var(--text);
+      background:radial-gradient(1200px 600px at 80% -20%, #12203a 0%, #0b0f1a 55%) fixed;
+      overflow-x:hidden;
+    }
+
+    .aurora::before,
+    .aurora::after{
+      content:"";
+      position:fixed;
+      inset:-20% -10%;
+      z-index:-1;
+      filter:blur(60px);
+      opacity:.35;
+      background:
+        radial-gradient(600px 300px at 20% 20%, rgba(124,58,237,.7), transparent 60%),
+        radial-gradient(500px 250px at 80% 40%, rgba(34,211,238,.6), transparent 60%),
+        radial-gradient(400px 220px at 50% 90%, rgba(245,158,11,.35), transparent 60%);
+      transform:translateZ(0);
+    }
+
+    /* Navigation */
+    .nav{
+      position:fixed; top:0; left:0; right:0;
+      backdrop-filter:saturate(140%) blur(10px);
+      background:linear-gradient(180deg, rgba(18,23,42,.75), rgba(18,23,42,.35));
+      border-bottom:1px solid rgba(255,255,255,.06);
+      z-index:50;
+    }
+    .nav-inner{
+      max-width:1100px; margin:0 auto; padding:14px 22px;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--text);
+    }
+    .logo{
+      width:36px; height:36px; border-radius:10px;
+      background:conic-gradient(from 210deg, var(--primary), var(--primary-2), var(--accent), var(--primary));
+      box-shadow:0 8px 24px rgba(124,58,237,.35);
+    }
+    .brand span{font-weight:800; letter-spacing:.5px}
+
+    .links{display:flex; gap:18px}
+    .links a{
+      color:var(--muted); text-decoration:none; font-weight:600;
+      padding:8px 12px; border-radius:10px;
+      transition:color .2s ease, background .2s ease;
+    }
+    .links a:hover{color:var(--text); background:rgba(255,255,255,.06)}
+
+    /* Hero */
+    .hero{
+      min-height:100vh; display:grid; place-items:center; text-align:center; padding:110px 22px 60px;
+      position:relative;
+    }
+    .hero-content{max-width:900px; animation:fadeUp .8s ease both .1s}
+    @keyframes fadeUp{from{opacity:0; transform:translateY(16px)} to{opacity:1; transform:translateY(0)}}
+
+    .eyebrow{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px; font-weight:600;
+      background:rgba(34,211,238,.12); color:#b9f0f6; border:1px solid rgba(34,211,238,.35);
+    }
+    .eyebrow .dot{
+      width:8px; height:8px; border-radius:999px; background:var(--primary-2);
+      box-shadow:0 0 24px rgba(34,211,238,.7);
+    }
+
+    .title{
+      margin:18px auto 12px; line-height:1.05;
+      font-weight:800; letter-spacing:-.5px;
+      font-size:clamp(34px, 4.2vw + 12px, 70px);
+      background:linear-gradient(120deg, #fff 0%, #dbe7ff 35%, #b7c0ff 60%, #fff 100%);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .subtitle{
+      margin:0 auto 26px; max-width:720px; color:var(--muted); font-weight:400; font-size:18px;
+    }
+
+    .cta{
+      display:inline-grid; grid-auto-flow:column; gap:14px;
+    }
+    .btn{
+      padding:14px 20px; border-radius:12px; font-weight:700; letter-spacing:.2px;
+      border:1px solid rgba(255,255,255,.12); cursor:pointer;
+      transition:transform .15s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .btn-primary{
+      background:linear-gradient(120deg, var(--primary) 0%, #8b5cf6 40%, var(--primary-2) 100%);
+      color:white; box-shadow:0 12px 30px rgba(124,58,237,.35), 0 6px 18px rgba(34,211,238,.25);
+    }
+    .btn-primary:hover{transform:translateY(-2px)}
+    .btn-ghost{
+      background:rgba(255,255,255,.06); color:var(--text);
+    }
+    .btn-ghost:hover{background:rgba(255,255,255,.12)}
+
+    /* Feature cards */
+    section{padding:70px 22px}
+    .container{max-width:1100px; margin:0 auto}
+    .section-title{font-size:28px; font-weight:800; margin:0 0 18px}
+    .section-sub{color:var(--muted); margin:0 0 26px}
+
+    .grid{
+      display:grid; gap:18px;
+      grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+    }
+    .card{
+      background:linear-gradient(180deg, rgba(18,23,42,.7), rgba(18,23,42,.55));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:16px; padding:22px; position:relative; overflow:hidden;
+      transition:transform .2s ease, box-shadow .2s ease;
+    }
+    .card:hover{transform:translateY(-4px); box-shadow:0 10px 24px var(--shadow)}
+    .badge{
+      width:44px; height:44px; border-radius:12px; display:grid; place-items:center; margin-bottom:12px;
+      background:linear-gradient(120deg, rgba(124,58,237,.25), rgba(34,211,238,.25));
+      border:1px solid rgba(255,255,255,.08)
+    }
+    .card h3{margin:8px 0 6px; font-size:20px}
+    .card p{margin:0; color:var(--muted)}
+
+    /* About */
+    .about{
+      display:grid; gap:22px; grid-template-columns:1.2fr .8fr; align-items:center;
+    }
+    .about .panel{
+      background:var(--card); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:22px;
+      box-shadow:0 10px 24px var(--shadow);
+    }
+    .about .panel strong{color:#fff}
+    .about .stats{
+      display:grid; gap:12px; grid-template-columns:repeat(2,1fr);
+    }
+    .stat{
+      background:linear-gradient(180deg, rgba(124,58,237,.15), rgba(34,211,238,.15));
+      border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:16px;
+      text-align:center;
+    }
+    .stat .num{font-size:28px; font-weight:800}
+    .stat .label{color:var(--muted); font-size:13px}
+
+    /* Contact */
+    .contact{
+      display:grid; gap:18px; grid-template-columns:1fr 1fr;
+    }
+    .input, textarea{
+      width:100%; padding:14px 12px; border-radius:12px;
+      border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.06);
+      color:var(--text); outline:none; transition:border .2s ease, background .2s ease;
+    }
+    .input:focus, textarea:focus{border-color:rgba(124,58,237,.6); background:rgba(255,255,255,.12)}
+    textarea{min-height:120px; resize:vertical}
+    .full{grid-column:1 / -1}
+
+    /* Footer */
+    footer{
+      padding:40px 22px; border-top:1px solid rgba(255,255,255,.08);
+      color:var(--muted); text-align:center;
+    }
+
+    /* Smooth section reveal */
+    .reveal{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease}
+    .reveal.active{opacity:1; transform:translateY(0)}
+
+    .bill-panel{
+      background: linear-gradient(135deg, rgba(18,23,42,.8), rgba(18,23,42,.6));
+      border: 2px solid rgba(124,58,237,.3);
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 20px 40px rgba(124,58,237,.25), inset 0 1px 0 rgba(255,255,255,.08);
+      position: relative;
+      overflow: hidden;
+    }
+    .bill-panel::before{
+      content: "";
+      position: absolute;
+      top: 0; right: 0;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(34,211,238,.1), transparent);
+      border-radius: 50%;
+    }
+    .bill-panel > *{position: relative; z-index: 1}
+    
+    .bill-header{
+      text-align: center;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid rgba(124,58,237,.4);
+    }
+    .bill-header h3{
+      margin: 0 0 8px;
+      font-size: 24px;
+      background: linear-gradient(120deg, #22d3ee, #7c3aed);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .bill-header p{
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+
+    .bill-row-item{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,.04);
+      font-size: 14px;
+    }
+    .bill-row-item:last-child{border-bottom: none}
+    .bill-label{color: var(--muted); font-weight: 500}
+    .bill-value{color: var(--text); font-weight: 600}
+
+    .bill-section{
+      margin: 20px 0;
+      padding: 16px;
+      background: rgba(255,255,255,.04);
+      border-radius: 12px;
+      border-left: 4px solid var(--primary-2);
+    }
+    .bill-section-title{
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary-2);
+      margin: 0 0 12px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    .bill-amount-box{
+      background: linear-gradient(135deg, rgba(124,58,237,.15), rgba(34,211,238,.15));
+      border: 2px solid rgba(124,58,237,.4);
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+      margin: 20px 0;
+    }
+    .bill-amount-label{
+      font-size: 12px;
+      color: var(--muted);
+      margin: 0 0 8px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+    .bill-amount-value{
+      font-size: 32px;
+      font-weight: 900;
+      background: linear-gradient(120deg, #fbbf24, #f97316);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin: 0;
+    }
+
+    .bill-actions{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .message-box{
+      background: linear-gradient(135deg, rgba(124,58,237,.1), rgba(34,211,238,.1));
+      border: 1px solid rgba(124,58,237,.3);
+      border-radius: 14px;
+      padding: 16px;
+      margin: 12px 0;
+      cursor: pointer;
+      transition: all .3s ease;
+    }
+    .message-box:hover{
+      background: linear-gradient(135deg, rgba(124,58,237,.15), rgba(34,211,238,.15));
+      border-color: rgba(124,58,237,.5);
+      transform: translateX(4px);
+    }
+    .message-box.active{
+      background: linear-gradient(135deg, rgba(124,58,237,.25), rgba(34,211,238,.25));
+      border-color: var(--primary-2);
+      box-shadow: 0 8px 20px rgba(124,58,237,.2);
+    }
+    .message-title{
+      font-weight: 700;
+      color: var(--primary-2);
+      font-size: 13px;
+      margin: 0 0 6px;
+    }
+    .message-text{
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width:880px){
+      .bill-panel{padding: 20px}
+      .bill-amount-value{font-size: 24px}
+      .bill-actions{grid-template-columns: 1fr}
+      .cta{display:inline-flex; flex-wrap:wrap; justify-content:center}
+    }
+
+  </style>
+</head>
+<body class="aurora">
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#home" class="brand">
+        <span class="logo" aria-hidden="true"></span>
+        <span>Power Ranging⚡</span>
+      </a>
+      <div class="links">
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#calculator">Calculator</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header id="home" class="hero">
+    <div class="hero-content">
+      <span class="eyebrow"><span class="dot"></span> New era of electricity⚡</span>
+      <h1 class="title">We are here to assist.</h1>
+      <p class="subtitle">This app helps households and businesses track electricity usage, avoid calculation errors, and manage power expenses easily. With a clean interface and fast performance, calculating your electricity bill has never been easier.</p>
+      <div class="cta">
+        <button class="btn btn-primary" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Explore features</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get in touch</button>
+        <button class="btn btn-primary" onclick="document.getElementById('calculator').scrollIntoView({behavior:'smooth'})">⚡ Calculate bill</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Features -->
+  <section id="features">
+    <div class="container reveal">
+      <h2 class="section-title">Features that stand out:</h2>
+      <p class="section-sub">Unit-Based Calculation<br>
+Instant Bill Estimation<br>
+Error-Free Calculation<br>
+Fast & Efficient<br>
+Suitable for All Users</p>
+      <div class="grid">
+        <div class="card">
+          <div class="badge">⚡</div>
+          <h3>Instant performance</h3>
+          <p>Lightweight components and optimized visuals keep your page fast on any device.</p>
+        </div>
+        <div class="card">
+          <div class="badge">🎨</div>
+          <h3>Dynamic gradients</h3>
+          <p>Aurora-inspired glow and conic accents create depth without heavy images.</p>
+        </div>
+        <div class="card">
+          <div class="badge">🧭</div>
+          <h3>Smooth navigation</h3>
+          <p>Scroll-linked reveals and snappy transitions guide visitors through the story.</p>
+        </div>
+        <div class="card">
+          <div class="badge">🔐</div>
+          <h3>Accessible by default</h3>
+          <p>Readable contrast, keyboard-friendly controls, and semantic structure.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <div class="container reveal">
+      <h2 class="section-title">Made by our modern team</h2>
+      <p class="section-sub">“Calculate your electricity bill instantly with accuracy and ease”⚡
+</p>
+      <div class="about">
+        <div class="panel">
+          <h3>For what purpose is this used?</h3>
+          <p>This app helps users easily calculate their electricity bill based on units consumed and current tariff rates. It provides a simple way to track power usage, estimate monthly costs, and pay electricity bills online securely. Users can view past bills, receive payment reminders, and avoid late fees. The app is designed to be user-friendly and suitable for all users, making electricity bill management fast and hassle-free</p>
+        </div>
+        <div>
+          <div class="stats">
+            <div class="stat">
+              <div class="num"><span id="metric-users">0</span>k+</div>
+              <div class="label">Happy users</div>
+            </div>
+            <div class="stat">
+              <div class="num"><span id="metric-speed">199</span>ms</div>
+              <div class="label">First interaction</div>
+            </div>
+            <div class="stat">
+              <div class="num"><span id="metric-stars">0</span></div>
+              <div class="label">Community stars</div>
+            </div>
+            <div class="stat">
+              <div class="num"><span id="metric-uptime">98</span>%</div>
+              <div class="label">Uptime</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Bill Calculator -->
+  <section id="calculator">
+    <div class="container reveal">
+      <h2 class="section-title">Calculate Your Electricity Bill</h2>
+      <p class="section-sub">Enter your consumption units and get an instant bill estimate with tax breakdown.</p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 28px;">
+        <!-- Calculator Input -->
+        <div class="bill-panel">
+          <h3 style="margin-top: 0; margin-bottom: 20px; color: var(--text);">📋 Enter Bill Details</h3>
+          
+          <div style="margin-bottom: 18px;">
+            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text); font-size: 13px;">👤 Consumer Name</label>
+            <input class="input" type="text" id="consumerName" placeholder="Enter your name" />
+          </div>
+
+          <div style="margin-bottom: 18px;">
+            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text); font-size: 13px;">🆔 Consumer ID</label>
+            <input class="input" type="text" id="consumerId" placeholder="e.g., CONS-12345" />
+          </div>
+
+          <div style="margin-bottom: 18px;">
+            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text); font-size: 13px;">⚡ Units Consumed</label>
+            <input class="input" type="number" id="units" placeholder="Enter units (kWh)" min="0" step="0.1" />
+          </div>
+
+          <div style="margin-bottom: 18px;">
+            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text); font-size: 13px;">💰 Tariff Rate (₹ per unit)</label>
+            <input class="input" type="number" id="tariffRate" placeholder="Rate per unit" value="7.50" min="0" step="0.01" />
+          </div>
+
+          <div style="margin-bottom: 18px;">
+            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text); font-size: 13px;">📊 Tax Rate (%)</label>
+            <input class="input" type="number" id="taxRate" placeholder="Tax percentage" value="10" min="0" step="0.1" />
+          </div>
+
+          <button class="btn btn-primary full" onclick="calculateBill()" style="margin-top: 12px; width: 100%;">⚡ Calculate Bill</button>
+        </div>
+
+        <!-- Bill Display -->
+        <div id="billResult" style="display: none;">
+          <div class="bill-panel">
+            <div class="bill-header">
+              <h3>⚡ ELECTRICITY BILL</h3>
+              <p>MANAGED BY MONESH SOLUTIONS</p>
+            </div>
+
+            <div class="bill-section">
+              <div class="bill-section-title">📋 Bill Information</div>
+              <div class="bill-row-item">
+                <span class="bill-label">Consumer Name:</span>
+                <span class="bill-value" id="billConsumerName">-</span>
+              </div>
+              <div class="bill-row-item">
+                <span class="bill-label">Consumer ID:</span>
+                <span class="bill-value" id="billConsumerId">-</span>
+              </div>
+              <div class="bill-row-item">
+                <span class="bill-label">Bill Date:</span>
+                <span class="bill-value" id="billDate">-</span>
+              </div>
+            </div>
+
+            <div class="bill-section">
+              <div class="bill-section-title">⚡ Consumption Details</div>
+              <div class="bill-row-item">
+                <span class="bill-label">Units Consumed:</span>
+                <span class="bill-value" id="billUnits">0 kWh</span>
+              </div>
+              <div class="bill-row-item">
+                <span class="bill-label">Rate per Unit:</span>
+                <span class="bill-value" id="billRate">₹0.00</span>
+              </div>
+            </div>
+
+            <div class="bill-section">
+              <div class="bill-section-title">💵 Amount Breakdown</div>
+              <div class="bill-row-item">
+                <span class="bill-label">Subtotal:</span>
+                <span class="bill-value" style="color: var(--primary-2);" id="billSubtotal">₹0.00</span>
+              </div>
+              <div class="bill-row-item">
+                <span class="bill-label">Tax (<span id="billTaxPercent">0</span>%):</span>
+                <span class="bill-value" style="color: var(--accent);" id="billTax">₹0.00</span>
+              </div>
+            </div>
+
+            <div class="bill-section">
+              <div class="bill-section-title">💳 Payment Method</div>
+              <div class="bill-row-item">
+                <span class="bill-label">Payment Mode:</span>
+                <span class="bill-value" id="billPaymentMethod" style="color: var(--primary-2); font-weight: 700;">Not selected</span>
+              </div>
+            </div>
+
+            <div class="bill-amount-box">
+              <p class="bill-amount-label">💳 TOTAL AMOUNT DUE</p>
+              <p class="bill-amount-value" id="billTotal">₹0.00</p>
+            </div>
+
+            <div id="qrSection" style="border: 2px dashed rgba(34,211,238,.6); border-radius: 16px; padding: 28px 20px; text-align: center; margin: 20px 0; background: rgba(34,211,238,.08); display: none;">
+              <p style="margin: 0 0 16px; color: #22d3ee; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px;">💳 SCAN & PAY WITH PHONEPE</p>
+              <div style="position: relative; display: inline-block; width: 160px; height: 160px;">
+                <img id="qrCodeImage" src="" alt="PhonePe QR Code" style="width: 160px; height: 160px; border-radius: 10px; background: white; box-shadow: 0 6px 20px rgba(34,211,238,.25); display: none;" />
+                <div id="qrPlaceholder" style="width: 160px; height: 160px; border-radius: 10px; background: white; display: flex; align-items: center; justify-content: center; color: #999; font-size: 12px; box-shadow: 0 6px 20px rgba(34,211,238,.25);">📱 QR Code</div>
+              </div>
+              <p style="margin: 16px 0 0; color: rgba(232,236,241,.8); font-size: 13px; letter-spacing: .3px;">Scan with PhonePe App to pay</p>
+            </div>
+
+            <div style="background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 12px; padding: 16px; margin: 20px 0;">
+              <p style="margin: 0 0 12px; color: var(--text); font-weight: 600; font-size: 12px;">� Payment Method</p>
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <label style="display: flex; align-items: center; gap: 10px; color: var(--text); cursor: pointer; font-size: 13px;">
+                  <input type="radio" id="paymentOnline" name="paymentMethod" value="online" class="bill-payment-radio" onclick="updatePaymentMethod()" style="width: 18px; height: 18px; cursor: pointer;" />
+                  <span>💻 Payment Through Online</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 10px; color: var(--text); cursor: pointer; font-size: 13px;">
+                  <input type="radio" id="paymentOffline" name="paymentMethod" value="offline" class="bill-payment-radio" onclick="updatePaymentMethod()" style="width: 18px; height: 18px; cursor: pointer;" />
+                  <span>💵 Payment Through Offline (Cash)</span>
+                </label>
+              </div>
+              <div id="selectedPaymentDisplay" style="margin-top: 12px; padding: 10px; background: rgba(34,211,238,.1); border-radius: 8px; border-left: 3px solid var(--primary-2); display: none;">
+                <p style="margin: 0; color: var(--primary-2); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px;">✓ Payment Method:</p>
+                <p id="selectedPaymentText" style="margin: 6px 0 0; color: var(--text); font-size: 12px;"></p>
+              </div>
+            </div>
+
+            <div class="bill-actions">
+              <button class="btn btn-primary" onclick="printBill()" style="width: 100%;">🖨️ Print</button>
+              <button class="btn btn-ghost" onclick="downloadBillPDF()" style="width: 100%;">⬇️ Download</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Message Selection Section -->
+      <div style="margin-top: 40px; padding-top: 40px; border-top: 2px solid rgba(255,255,255,.08);">
+        <h3 style="color: var(--text); margin-bottom: 10px;">📝 Select Message for Bill Footer</h3>
+        <p style="color: var(--muted); margin-bottom: 20px;">Choose a message to display at the bottom of the bill:</p>
+        
+        <div id="messagesContainer">
+          <div class="message-box" onclick="selectMessage(this, 'msg1')">
+            <p class="message-title">😊 Friendly & Customer Focused</p>
+            <p class="message-text">"Thank you for being a valued customer. Please ensure payment is made by the due date to avoid service interruption. We appreciate your promptness!"</p>
+          </div>
+
+          <div class="message-box" onclick="selectMessage(this, 'msg2')">
+            <p class="message-title">✂️ Concise & Direct</p>
+            <p class="message-text">"Payment due by [Date]. Please pay online to avoid late fees. Thank you for your continued patronage."</p>
+          </div>
+
+          <div class="message-box" onclick="selectMessage(this, 'msg3')">
+            <p class="message-title">🌱 Safety & Conservation Focused</p>
+            <p class="message-text">"Save energy, save money! Please turn off lights when not in use. Thank you for making a difference."</p>
+          </div>
+
+          <div class="message-box" onclick="selectMessage(this, 'msg4')">
+            <p class="message-title">💼 Professional & Formal</p>
+            <p class="message-text">"We appreciate your prompt payments. Please note that failure to settle this bill by the due date may result in penalties or disconnection."</p>
+          </div>
+
+          <div class="message-box" onclick="selectMessage(this, 'msg5')">
+            <p class="message-title">✅ Short Note for Digital Receipts</p>
+            <p class="message-text">"Electricity bill successfully received. Thank you! - Monesh Solutions"</p>
+          </div>
+        </div>
+
+        <div id="selectedMessageDisplay" style="display: none; margin-top: 20px; padding: 16px; background: rgba(34,211,238,.15); border-left: 4px solid var(--primary-2); border-radius: 12px;">
+          <p style="margin: 0 0 8px; font-weight: 600; color: var(--primary-2);">✓ Selected Message:</p>
+          <p id="selectedMessageText" style="margin: 0; color: var(--text); font-style: italic;"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Contact -->
+  <section id="contact">
+    <div class="container reveal">
+      <h2 class="section-title">Contact</h2>
+      <p class="section-sub">Tell us about your power use and we’ll assist you and have a great experience.</p>
+      <form class="contact" onsubmit="sendEmail(event)">
+        <input class="input" type="text" id="sender_name" placeholder="Your name" required />
+        <input class="input" type="email" id="sender_email" placeholder="Email address" required />
+        <input class="input" type="text" id="bill_type" placeholder="What bill to generate" required />
+        <textarea class="full" id="message" placeholder="Any queries?" required></textarea>
+        <button class="btn btn-primary full" type="submit">Send request</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    © <span id="year"></span> Power — Built with core.
+  </footer>
+
+  <script>
+    // Smooth reveal on scroll
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.classList.add('active');
+          io.unobserve(e.target);
+        }
+      })
+    },{threshold:0.15});
+    revealEls.forEach(el=>io.observe(el));
+
+    // Playful animated metrics
+    const animateNum = (el, to, suffix = '')=>{
+      const start = 0, dur = 900, t0 = performance.now();
+      const step = (now)=>{
+        const p = Math.min(1, (now - t0)/dur);
+        const ease = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(start + (to - start)*ease) + suffix;
+        if(p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+    window.addEventListener('DOMContentLoaded', ()=>{
+      animateNum(document.getElementById('metric-users'), 24);
+      animateNum(document.getElementById('metric-speed'), 180);
+      animateNum(document.getElementById('metric-stars'), 512);
+      animateNum(document.getElementById('metric-uptime'), 99);
+      document.getElementById('year').textContent = new Date().getFullYear();
+    });
+
+    // Keyboard-friendly skip links behavior (optional enhancement)
+    document.querySelectorAll('.links a').forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+      });
+    });
+
+    // Bill Calculator Functions
+    let selectedMessageKey = null;
+    let selectedPaymentMethod = null;
+    const messages = {
+      msg1: "Thank you for being a valued customer. Please ensure payment is made by the due date to avoid service interruption. We appreciate your promptness!",
+      msg2: "Payment due by [Date]. Please pay online to avoid late fees. Thank you for your continued patronage.",
+      msg3: "Save energy, save money! Please turn off lights when not in use. Thank you for making a difference.",
+      msg4: "We appreciate your prompt payments. Please note that failure to settle this bill by the due date may result in penalties or disconnection.",
+      msg5: "Electricity bill successfully received. Thank you! - Monesh Solutions"
+    };
+
+    function selectMessage(element, messageKey){
+      // Remove active style from all message boxes
+      document.querySelectorAll('.message-box').forEach(box => box.style.borderColor = 'rgba(124,58,237,.3)');
+      // Add active style to clicked element
+      element.style.borderColor = 'rgba(124,58,237,.8)';
+      selectedMessageKey = messageKey;
+      
+      // Display selected message
+      const messageDisplay = document.getElementById('selectedMessageDisplay');
+      const messageText = document.getElementById('selectedMessageText');
+      messageText.textContent = messages[messageKey];
+      messageDisplay.style.display = 'block';
+      messageDisplay.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+    }
+
+    function updatePaymentMethod(){
+      const onlineRadio = document.getElementById('paymentOnline');
+      const offlineRadio = document.getElementById('paymentOffline');
+      const paymentDisplay = document.getElementById('selectedPaymentDisplay');
+      const paymentText = document.getElementById('selectedPaymentText');
+      const qrSection = document.getElementById('qrSection');
+      
+      if(onlineRadio.checked){
+        selectedPaymentMethod = 'Payment Through Online';
+        paymentDisplay.style.display = 'block';
+        paymentText.textContent = '💻 Payment Through Online';
+        document.getElementById('billPaymentMethod').textContent = '💻 Payment Through Online';
+        qrSection.style.display = 'block';
+      } else if(offlineRadio.checked){
+        selectedPaymentMethod = 'Payment Through Offline (Cash)';
+        paymentDisplay.style.display = 'block';
+        paymentText.textContent = '💵 Payment Through Offline (Cash)';
+        document.getElementById('billPaymentMethod').textContent = '💵 Payment Through Offline (Cash)';
+        qrSection.style.display = 'none';
+      } else {
+        selectedPaymentMethod = null;
+        paymentDisplay.style.display = 'none';
+        document.getElementById('billPaymentMethod').textContent = 'Not selected';
+        qrSection.style.display = 'none';
+      }
+    }
+
+    function calculateBill(){
+      const consumerName = document.getElementById('consumerName').value.trim();
+      const consumerId = document.getElementById('consumerId').value.trim();
+      const units = parseFloat(document.getElementById('units').value) || 0;
+      const tariffRate = parseFloat(document.getElementById('tariffRate').value) || 0;
+      const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+
+      if(!consumerName || !consumerId || units <= 0){
+        alert('Please fill all fields with valid values');
+        return;
+      }
+
+      // Calculate amounts
+      const subtotal = units * tariffRate;
+      const tax = (subtotal * taxRate) / 100;
+      const total = subtotal + tax;
+
+      // Display results
+      const billResult = document.getElementById('billResult');
+      
+      // Load QR code image only for offline payment
+      const qrImg = document.getElementById('qrCodeImage');
+      const qrPlaceholder = document.getElementById('qrPlaceholder');
+      
+      // Try to load QR code
+      if(!qrImg.src || qrImg.src === ''){
+        qrImg.src = 'qr-code.png';
+        qrImg.onload = function() {
+          qrImg.style.display = 'block';
+          qrPlaceholder.style.display = 'none';
+        };
+        qrImg.onerror = function() {
+          qrImg.style.display = 'none';
+          qrPlaceholder.style.display = 'flex';
+          console.log('QR code not found.');
+        };
+      }
+      
+      // Reset checkboxes for new bill
+      document.getElementById('paymentOnline').checked = false;
+      document.getElementById('paymentOffline').checked = false;
+      document.getElementById('selectedPaymentDisplay').style.display = 'none';
+      document.getElementById('qrSection').style.display = 'none';
+      selectedPaymentMethod = null;
+      document.getElementById('billPaymentMethod').textContent = 'Not selected';
+      
+      document.getElementById('billConsumerName').textContent = consumerName;
+      document.getElementById('billConsumerId').textContent = consumerId;
+      document.getElementById('billDate').textContent = new Date().toLocaleDateString('en-IN', {year: 'numeric', month: 'long', day: 'numeric'});
+      document.getElementById('billUnits').textContent = units.toFixed(2) + ' kWh';
+      document.getElementById('billRate').textContent = '₹' + tariffRate.toFixed(2);
+      document.getElementById('billSubtotal').textContent = '₹' + subtotal.toFixed(2);
+      document.getElementById('billTaxPercent').textContent = taxRate.toFixed(1);
+      document.getElementById('billTax').textContent = '₹' + tax.toFixed(2);
+      document.getElementById('billTotal').textContent = '₹' + total.toFixed(2);
+
+      billResult.style.display = 'block';
+      billResult.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+    }
+
+    function printBill(){
+      const consumerName = document.getElementById('billConsumerName').textContent;
+      if(consumerName === '-'){
+        alert('Please calculate the bill first');
+        return;
+      }
+
+      const printWindow = window.open('', '', 'width=350,height=1200');
+      const selectedMsg = selectedMessageKey ? messages[selectedMessageKey] : 'Thank you for your business!';
+      const qrImageData = document.getElementById('qrCodeImage').src;
+      const isOfflinePayment = selectedPaymentMethod && selectedPaymentMethod.includes('Offline');
+      const paymentMethodHTML = selectedPaymentMethod ? `<div style="background: rgba(34,211,238,.1); padding: 10px; border-radius: 6px; margin: 10px 0; border-left: 3px solid #22d3ee;"><p style="margin: 0 0 5px; font-weight: 700; font-size: 11px; color: #22d3ee;">💳 PAYMENT METHOD:</p><p style="margin: 0; font-size: 10px; color: #333;">${selectedPaymentMethod}</p></div>` : '';
+      const billHTML = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Electricity Bill</title>
+          <style>
+            body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 10px; color: #333; background: #f5f5f5; }
+            .bill-container { 
+              max-width: 320px; margin: 0 auto; background: white; border: 2px solid #7c3aed; 
+              padding: 15px; border-radius: 4px; box-shadow: 0 10px 40px rgba(0,0,0,.1);
+              font-size: 12px;
+            }
+            .header { 
+              text-align: center; border-bottom: 2px solid #7c3aed; padding-bottom: 10px; margin-bottom: 12px;
+            }
+            .header h2 { margin: 3px 0; color: #7c3aed; font-size: 18px; }
+            .header p { margin: 2px 0; font-size: 9px; color: #666; letter-spacing: 1px; }
+            .bill-details { margin-bottom: 12px; }
+            .bill-row { display: flex; justify-content: space-between; margin-bottom: 5px; padding: 4px 0; border-bottom: 1px dotted #ddd; font-size: 10px; }
+            .bill-label { font-weight: 600; color: #555; }
+            .bill-value { text-align: right; color: #333; font-weight: 500; }
+            .section-title { 
+              font-size: 10px; font-weight: 700; color: #7c3aed; 
+              margin: 10px 0 6px; text-transform: uppercase; letter-spacing: 0.5px;
+            }
+            .divider { border-top: 1px solid #7c3aed; margin: 8px 0; }
+            .total-section { 
+              background: linear-gradient(135deg, rgba(124,58,237,.1), rgba(34,211,238,.1)); 
+              padding: 10px; border-radius: 4px; text-align: center; margin: 10px 0;
+              border-left: 3px solid #7c3aed;
+            }
+            .total-label { font-size: 9px; color: #666; margin: 0 0 4px; text-transform: uppercase; }
+            .total-amount { font-size: 24px; font-weight: 900; color: #f97316; margin: 0; }
+            .footer { 
+              text-align: center; margin-top: 12px; padding-top: 8px; border-top: 1px solid #ddd; 
+              font-size: 9px; color: #666; line-height: 1.4;
+            }
+            .message-box { 
+              background: #f0f4ff; padding: 8px; border-radius: 4px; margin-top: 10px; 
+              border-left: 3px solid #22d3ee; font-size: 9px; color: #333; line-height: 1.3;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="bill-container">
+            <div class="header">
+              <h2>⚡ ELECTRICITY BILL</h2>
+              <p>MANAGED BY MONESH SOLUTIONS</p>
+            </div>
+            
+            <div class="section-title">📋 Bill Information</div>
+            <div class="bill-details">
+              <div class="bill-row">
+                <span class="bill-label">Consumer Name:</span>
+                <span class="bill-value">${document.getElementById('billConsumerName').textContent}</span>
+              </div>
+              <div class="bill-row">
+                <span class="bill-label">Consumer ID:</span>
+                <span class="bill-value">${document.getElementById('billConsumerId').textContent}</span>
+              </div>
+              <div class="bill-row">
+                <span class="bill-label">Bill Date:</span>
+                <span class="bill-value">${document.getElementById('billDate').textContent}</span>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="section-title">⚡ Consumption Details</div>
+            <div class="bill-details">
+              <div class="bill-row">
+                <span class="bill-label">Units Consumed:</span>
+                <span class="bill-value">${document.getElementById('billUnits').textContent}</span>
+              </div>
+              <div class="bill-row">
+                <span class="bill-label">Rate per Unit:</span>
+                <span class="bill-value">${document.getElementById('billRate').textContent}</span>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="section-title">💵 Amount Breakdown</div>
+            <div class="bill-details">
+              <div class="bill-row">
+                <span class="bill-label">Subtotal:</span>
+                <span class="bill-value" style="color: #7c3aed; font-weight: 700;">${document.getElementById('billSubtotal').textContent}</span>
+              </div>
+              <div class="bill-row">
+                <span class="bill-label">Tax (${document.getElementById('billTaxPercent').textContent}%):</span>
+                <span class="bill-value" style="color: #f59e0b; font-weight: 700;">${document.getElementById('billTax').textContent}</span>
+              </div>
+            </div>
+
+            <div class="total-section">
+              <p class="total-label">💳 Total Amount Due</p>
+              <p class="total-amount">${document.getElementById('billTotal').textContent}</p>
+            </div>
+
+            ${isOfflinePayment ? `<div style="text-align: center; margin: 12px 0; padding: 10px; background: rgba(34,211,238,.1); border-radius: 4px; border: 2px dashed rgba(34,211,238,.5);">
+              <p style="margin: 0 0 8px; font-weight: 700; font-size: 10px; color: #7c3aed; text-transform: uppercase; letter-spacing: 0.5px;">💳 Scan & Pay with PhonePe</p>
+              <img src="${qrImageData}" alt="PhonePe QR Code" style="width: 100px; height: 100px; border-radius: 4px; background: white; padding: 3px;" />
+              <p style="margin: 6px 0 0; font-size: 8px; color: #666;">Scan QR to pay</p>
+            </div>` : ''}
+
+            ${paymentMethodHTML}
+
+            <div class="message-box">
+              ${selectedMsg}
+            </div>
+
+            <div class="footer">
+              <p><strong>Payment Instructions:</strong></p>
+              <p>Please pay within 15 days to avoid late charges.</p>
+              <p>Thank you for choosing Monesh Solutions!</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `;
+      printWindow.document.write(billHTML);
+      printWindow.document.close();
+      setTimeout(() => printWindow.print(), 250);
+    }
+
+    function downloadBillPDF(){
+      const consumerName = document.getElementById('billConsumerName').textContent;
+      if(consumerName === '-'){
+        alert('Please calculate the bill first');
+        return;
+      }
+
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 320;
+      canvas.height = 1000;
+      const isOfflinePayment = selectedPaymentMethod && selectedPaymentMethod.includes('Offline');
+
+      const bgGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      bgGradient.addColorStop(0, '#f9fafb');
+      bgGradient.addColorStop(1, '#ffffff');
+      ctx.fillStyle = bgGradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = '#7c3aed';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(10, 10, 300, 980);
+
+      // Header
+      ctx.fillStyle = '#7c3aed';
+      ctx.font = 'bold 16px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('⚡ ELECTRICITY BILL', canvas.width / 2, 35);
+
+      ctx.fillStyle = '#666';
+      ctx.font = '8px Arial';
+      ctx.fillText('MANAGED BY MONESH SOLUTIONS', canvas.width / 2, 50);
+
+      ctx.strokeStyle = '#7c3aed';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(20, 60);
+      ctx.lineTo(300, 60);
+      ctx.stroke();
+
+      // Content
+      ctx.fillStyle = '#333';
+      ctx.textAlign = 'left';
+      ctx.font = 'bold 9px Arial';
+      let y = 75;
+
+      const sections = [
+        { title: '📋 BILL INFO', items: [
+          'Consumer: ' + document.getElementById('billConsumerName').textContent,
+          'ID: ' + document.getElementById('billConsumerId').textContent,
+          'Date: ' + document.getElementById('billDate').textContent
+        ]},
+        { title: '⚡ CONSUMPTION', items: [
+          'Units: ' + document.getElementById('billUnits').textContent,
+          'Rate: ' + document.getElementById('billRate').textContent
+        ]},
+        { title: '💵 BREAKDOWN', items: [
+          'Subtotal: ' + document.getElementById('billSubtotal').textContent,
+          'Tax: ' + document.getElementById('billTax').textContent
+        ]}
+      ];
+
+      sections.forEach((section, idx) => {
+        ctx.fillStyle = '#7c3aed';
+        ctx.font = 'bold 8px Arial';
+        ctx.fillText(section.title, 25, y);
+        y += 12;
+
+        ctx.fillStyle = '#333';
+        ctx.font = '8px Arial';
+        section.items.forEach(item => {
+          ctx.fillText(item, 30, y);
+          y += 10;
+        });
+        y += 6;
+      });
+
+      // Total Box
+      ctx.fillStyle = 'rgba(124,58,237,.1)';
+      ctx.fillRect(20, y, 280, 40);
+      ctx.strokeStyle = '#7c3aed';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(20, y, 280, 40);
+
+      ctx.fillStyle = '#666';
+      ctx.font = 'bold 8px Arial';
+      ctx.fillText('💳 TOTAL AMOUNT DUE', 30, y + 12);
+
+      ctx.fillStyle = '#f97316';
+      ctx.font = 'bold 18px Arial';
+      ctx.fillText(document.getElementById('billTotal').textContent, 30, y + 32);
+
+      y += 48;
+
+      // QR Code Section - Only for offline payment
+      if(isOfflinePayment) {
+        ctx.fillStyle = '#7c3aed';
+        ctx.font = 'bold 8px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('💳 SCAN & PAY WITH PhonePe', canvas.width / 2, y);
+        y += 12;
+
+        // Draw QR code placeholder box
+        ctx.strokeStyle = '#7c3aed';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 3]);
+        ctx.strokeRect(canvas.width / 2 - 50, y, 100, 100);
+        ctx.setLineDash([]);
+        
+        ctx.fillStyle = '#999';
+        ctx.font = '8px Arial';
+        ctx.fillText('[QR Code]', canvas.width / 2, y + 50);
+        y += 110;
+      }
+
+      // Selected Payment Method Section
+      if(selectedPaymentMethod){
+        ctx.fillStyle = '#7c3aed';
+        ctx.font = 'bold 8px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('💳 PAYMENT METHOD:', canvas.width / 2, y);
+        y += 10;
+
+        ctx.fillStyle = '#333';
+        ctx.font = '7px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText(selectedPaymentMethod, canvas.width / 2, y);
+        y += 12;
+      }
+
+      // Message
+      ctx.fillStyle = '#555';
+      ctx.font = '7px Arial';
+      ctx.textAlign = 'center';
+      const selectedMsg = selectedMessageKey ? messages[selectedMessageKey] : 'Thank you for your business!';
+      const words = selectedMsg.split(' ');
+      let line = '';
+      const lineHeight = 9;
+      const maxWidth = 280;
+
+      words.forEach(word => {
+        const testLine = line + word + ' ';
+        const metrics = ctx.measureText(testLine);
+        if(metrics.width > maxWidth && line) {
+          ctx.fillText(line, canvas.width / 2, y);
+          line = word + ' ';
+          y += lineHeight;
+        } else {
+          line = testLine;
+        }
+      });
+      if(line) ctx.fillText(line, canvas.width / 2, y);
+
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png');
+      link.download = 'bill_' + document.getElementById('consumerId').value.replace(/[^a-zA-Z0-9]/g, '_') + '_' + new Date().getTime() + '.png';
+      link.click();
+    }
+
+    // Email Service Function
+    function sendEmail(event){
+      event.preventDefault();
+
+      const senderName = document.getElementById('sender_name').value.trim();
+      const senderEmail = document.getElementById('sender_email').value.trim();
+      const billType = document.getElementById('bill_type').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      if(!senderName || !senderEmail || !message){
+        alert('Please fill in all required fields');
+        return;
+      }
+
+      // Show loading state
+      const submitBtn = event.target.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = '📤 Sending...';
+      submitBtn.disabled = true;
+
+      // Send email using mailto (fallback method)
+      const subject = encodeURIComponent('Power Ranging - ' + (billType || 'General Inquiry'));
+      const body = encodeURIComponent(
+        'Name: ' + senderName + '\n' +
+        'Email: ' + senderEmail + '\n' +
+        'Bill Type: ' + (billType || 'Not specified') + '\n' +
+        'Message: ' + message + '\n\n' +
+        'Sent from: Power Ranging⚡ Website'
+      );
+
+      // Create a hidden link to send email
+      const mailtoLink = 'mailto:moneshaccsiet@gmail.com?subject=' + subject + '&body=' + body;
+      
+      // Try to open email client
+      const link = document.createElement('a');
+      link.href = mailtoLink;
+      link.click();
+
+      // Reset form
+      setTimeout(() => {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+        alert('✅ Thank you! Your message has been sent. We will contact you soon.');
+        event.target.reset();
+      }, 500);
+    }
+  </script>
+</body>
+</html>
